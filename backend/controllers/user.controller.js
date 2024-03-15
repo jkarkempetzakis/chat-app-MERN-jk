@@ -2,6 +2,7 @@ import User from "../models/user.model.js";
 
 export const getUsersForBar = async (req, res) => {
     try {
+        //can just get conversations that the user has as well. Keep users for now
         const loggedInId = req.user._id;
         const filteredresult = await User.find({ _id: { $ne: loggedInId } }); //adding the $ne hence the filter, looking for every user except the one logged in
         res.status(200).json(filteredresult);
