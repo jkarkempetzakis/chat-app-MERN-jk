@@ -8,9 +8,11 @@ import messageRoutes from "./routes/message.routes.js";
 import userRoutes from "./routes/user.routes.js"
 //database import
 import connectToDB from "./db/connectToDB.js";
+//other
+import { app, server } from './socket/socket.js'
 
 //Variables
-const app = express();
+
 const PORT = process.env.PORT || 5000;
 
 //environment variable config
@@ -25,17 +27,12 @@ app.use("/api/messages", messageRoutes);
 app.use("/api/users", userRoutes);
 
 
-// app.get("/", (req, res) => {
-
-//     res.send("yo");
-
-// });
 
 
 
 
 
-app.listen(PORT, () => {
+server.listen(PORT, () => {
     connectToDB();
     console.log(`server running on port ${PORT}`)
 });

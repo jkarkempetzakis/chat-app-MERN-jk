@@ -1,5 +1,6 @@
 import Conversation from "../models/conversation.model.js";
 import Message from "../models/message.model.js";
+import { getReceiverSocketId, io } from "../socket/socket.js";
 
 export const sendMessage = async (req, res) => {
 
@@ -32,6 +33,20 @@ export const sendMessage = async (req, res) => {
             conversation.messages.push(newMessage._id);
         }
         await Promise.all([conversation.save(), newMessage.save()]);
+        //message has reached the db
+
+        //--------Socket Io functionality---------//
+
+        const receiverSocketId = getReceiverSocketId(receiverId);
+        if (receiverSocketId) {
+            //using "to" instead of "emit" straight away because this event is meant for one user
+            io.to(receiverSocketId).emit("newMessage", newMessage);
+        }
+
+
+
+
+
         res.status(201).json(newMessage);
 
     } catch (error) {

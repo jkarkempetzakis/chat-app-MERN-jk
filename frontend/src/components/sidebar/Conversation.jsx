@@ -1,5 +1,6 @@
 import React from 'react'
 import useConversation from '../../zustandstore/useConversation';
+import { useSocketContext } from '../../context/SocketContext';
 
 
 const Conversation = ({ user, lastindex }) => {
@@ -7,6 +8,9 @@ const Conversation = ({ user, lastindex }) => {
     const { selectedConversation, setSelectedConversation } = useConversation();
 
     const isSelected = selectedConversation?._id === user._id;
+    //get online users
+    const { onlineUsers } = useSocketContext();
+    const isOnline = onlineUsers.includes(user._id); //checks to see if the user is is part of the online user set
     return (
         <>
             <div className={`flex gap-2 items-center hover:bg-sky-500 rounded p-2 py-1 cursor-pointer
@@ -15,7 +19,7 @@ const Conversation = ({ user, lastindex }) => {
             
             `}
                 onClick={() => setSelectedConversation(user)}>
-                <div className='avatar online'>
+                <div className={`avatar ${isOnline ? "online" : "offline"}`}>
                     <div className='w-12 rounded-full'>
                         <img
                             src={user.profilePic}
