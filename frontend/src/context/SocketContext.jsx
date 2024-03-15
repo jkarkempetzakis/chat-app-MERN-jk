@@ -18,7 +18,7 @@ export const SocketContextProvider = ({ children }) => {
 
 
     useEffect(() => {
-
+        //
         if (authUser) {
 
             const socket = io("https://free-chat-proj.onrender.com", {

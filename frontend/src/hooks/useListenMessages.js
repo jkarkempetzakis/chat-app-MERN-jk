@@ -4,13 +4,18 @@ import useConversation from '../zustandstore/useConversation';
 
 const useListenMessages = () => {
     const { socket } = useSocketContext();
-    const { messages, setMessages } = useConversation();
+    const { messages, setMessages, selectedConversation } = useConversation();
 
     useEffect(() => {
         socket?.on("newMessage", (newMessage) => {
-            newMessage.shouldShake = true;
 
-            setMessages([...messages, newMessage]);
+
+            newMessage.shouldShake = true;
+            if (newMessage.senderId === selectedConversation._id) {
+                setMessages([...messages, newMessage]);
+            }
+
+
         });
 
         return () => socket?.off("newMessage");
